@@ -1,0 +1,13 @@
+#!/bin/bash
+DELAY=0
+if [[ "$1" == "-d" ]]; then
+    stm32flash /dev/ttyUSB0
+    DELAY=1
+    shift 1
+fi
+[[ "$DELAY" == "1" ]] && sleep 0.5
+if [[ -e /dev/ttyUSB0 ]]; then
+    stm32flash -w `realpath $1` -v -g 0x0 /dev/ttyUSB0
+else
+    ~/raspi_stm32flash $1
+fi
